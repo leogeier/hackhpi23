@@ -24,7 +24,7 @@ function LocationMarker() {
 
 function LoadStreets() {
   const map = useMap();
-  fetch("http://localhost:5000/streets")
+  fetch("/api/streets")
   .then(function(response) {
     return response.json();
   }).then(function(data) {
