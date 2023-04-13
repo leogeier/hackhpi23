@@ -1,1 +1,1 @@
-pip install geopandas numpy shapely jupyterlab osmnx
+pip install geopandas numpy shapely jupyterlab osmnx folium
