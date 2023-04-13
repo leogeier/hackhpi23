@@ -1,10 +1,19 @@
 # Backend API
 
+## Installation
+``` pip install flask flask-restful ```
+Run with
+```python api.py```
+
 # Endpoints
 ## Set datapoint
 - Can easily be generated [here](https://geojson.io/#map=2/0/20).
 - Pollution [0-100] in Prozent
+
 POST /upload/points
+```
+curl -d @example_data/haus_l_points.json -X PUT -H "Content-Type: application/json" "localhost:5000/upload/points"
+```
 ```
 {
   "type": "FeatureCollection",
@@ -45,6 +54,11 @@ POST /upload/points
 ## Upload photo
 POST /upload/photo?x=X_COORDINATE&y=Y_COORDINATE
 Mit Fileupload
+
+Curl:
+```
+curl -d @../frontend/assets/zigarette.png -X PUT "localhost:5000/upload/photo?x=10.4&y=10.2"
+```
 
 
 ## Query pollution
