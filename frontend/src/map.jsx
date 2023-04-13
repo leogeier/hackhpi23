@@ -34,6 +34,7 @@ function LoadStreets() {
         return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
       }
     }).addTo(map);
+
   }).catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
@@ -48,6 +49,43 @@ function InvalidateOnLoad() {
   return null;
 }
 
+function LoadImageMarkers() {
+  const map = useMap();
+  fetch("http://localhost:5000/photos")
+  .then(function(response) {
+    return response.json();
+  }).then(function(data) {
+    const example_object = JSON.parse(data);
+    L.geoJSON(example_object, {
+      style: function(feature) {
+        return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
+      },
+      onEachFeature: async function onEachFeature(feature, layer) {
+        // does this feature have a property named popupContent?
+        if (feature.properties && feature.properties.filenames) {
+            const image = new Image(300, 300)
+            const imageData = await fetchPhoto(feature.properties.filenames)
+            image.src = imageData.url
+            layer.bindPopup(image, {minWidth: 300});
+        }
+    }
+    }).addTo(map);
+  }).catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });
+  
+  return null;
+}
+
+async function fetchPhoto(filename) {
+  return fetch("http://localhost:5000/static/" + filename)
+  .then(function(response) {
+    return response;
+  }).catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });
+}
+
 export default function Map() {
   
 
@@ -57,6 +95,7 @@ export default function Map() {
         <InvalidateOnLoad/>
         <LocationMarker />
         <LoadStreets/>
+        <LoadImageMarkers/>
 
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
