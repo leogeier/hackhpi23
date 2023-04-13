@@ -52,8 +52,8 @@ export default function Map() {
   
 
   return (
-    <div id='map' className='w-screen h-96'>
-      <MapContainer center={fallback} zoom={13} className='w-full h-full' >
+    <div id='map' className='w-full h-full fixed top-0 left-0 -z-10'>
+      <MapContainer center={fallback} zoom={13} >
         <InvalidateOnLoad/>
         <LocationMarker />
         <LoadStreets/>
