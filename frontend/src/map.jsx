@@ -48,7 +48,7 @@ function LoadStreets() {
         "type": "Feature",
         "properties": {
           "stroke": "#10ff00",
-          "stroke-width": 2,
+          "stroke-width": 20,
           "stroke-opacity": 1
         },
         "geometry": {
@@ -65,7 +65,11 @@ function LoadStreets() {
   
   const example_object = JSON.parse(example_json);
   const map = useMap();
-  L.geoJSON(example_object).addTo(map);
+  L.geoJSON(example_object, {
+    style: function(feature) {
+      return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
+    }
+  }).addTo(map);
   
   return null;
 }
