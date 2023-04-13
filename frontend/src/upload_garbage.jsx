@@ -12,7 +12,7 @@ export default function UploadGarbage() {
         </svg>
         <span className="text-white font-bold px-3">Take a photo</span>
       </label>
-      <input id="file-upload-garbage" className="opacity-0" type="file" accept="image/*" capture="camera" />
+      <input onChange={e => {alert(e.target.files[0].name)}}id="file-upload-garbage" className="opacity-0" type="file" accept="image/*" capture="camera" />
     </div>
   );
 }
