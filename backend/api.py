@@ -1,14 +1,14 @@
 from flask import Flask, abort, request
 from flask_restful import Resource, Api
 from schema import UploadedPhotoSchema, AddedPointSchema
-import geopandas
+import geopandas as gpd
 import pandas as pd
 from streets import calculate_streets
 
 app = Flask(__name__)
 api = Api(app)
 
-geometry_objects = pd.DataFrame()
+geometry_objects = gpd.read_file("example_data/haus_l_points.json")
 
 class Datapoint(Resource):
     def put(self):
@@ -16,7 +16,7 @@ class Datapoint(Resource):
         # errors = AddedPointSchema().validate(request.json)
         # if errors:
             # abort(400, str(errors))
-        df = geopandas.GeoDataFrame.from_features(request.json)
+        df = gpd.GeoDataFrame.from_features(request.json)
         geometry_objects = pd.concat([geometry_objects, df])
 
 class UploadedPhoto(Resource):
