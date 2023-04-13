@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from schema import UploadedPhotoSchema
 import geopandas as gpd
 import pandas as pd
-from streets import calculate_streets
+from streets import calculate_streets, WORKING_CRS
 from flask_cors import CORS
 import os
 import uuid
@@ -12,6 +12,7 @@ import json
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from photos import load_photos_from_disk
+import shapely
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
@@ -35,7 +36,15 @@ class Datapoint(Resource):
         # errors = AddedPointSchema().validate(request.json)
         # if errors:
             # abort(400, str(errors))
-        df = gpd.GeoDataFrame.from_features(request.json)
+        df = gpd.GeoDataFrame.from_features(request.json, crs="EPSG:4326")
+        # Filter after close points and remove them from dataset
+        mask = shapely.geometry.MultiPoint(list(df.to_crs(WORKING_CRS).geometry)).buffer(10)
+        geometry_objects = geometry_objects.to_crs(WORKING_CRS)
+        print(len(geometry_objects))
+        print(geometry_objects[geometry_objects.within(mask)])
+        geometry_objects = geometry_objects[~geometry_objects.within(mask)]
+        print(len(geometry_objects))
+        geometry_objects = geometry_objects.to_crs("EPSG:4326")
         geometry_objects = pd.concat([geometry_objects, df])
 
 class UploadedPhoto(Resource):
