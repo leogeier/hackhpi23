@@ -32,7 +32,7 @@ const router = createBrowserRouter([
 function Content() {
   return (
     <div>
-      <Link to="/"><h1 className="text-sm font-bold">Project Title</h1></Link>
+      <Link to="/"><h1 className="text-sm font-black italic text-emerald-200">Project Title</h1></Link>
       <Outlet />
     </div>
   );
