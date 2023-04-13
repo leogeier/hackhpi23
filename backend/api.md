@@ -11,8 +11,9 @@ Run with
 - Pollution [0-100] in Prozent
 
 POST /upload/points
-
-
+```
+curl -d @example_data/haus_l_points.json -X PUT -H "Content-Type: application/json" "localhost:5000/upload/points"
+```
 ```
 {
   "type": "FeatureCollection",
