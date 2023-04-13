@@ -40,6 +40,7 @@ class Datapoint(Resource):
 
 class UploadedPhoto(Resource):
     def put(self):
+        global photos
         errors = UploadedPhotoSchema().validate(request.args)
         print(request.args)
         if errors:
@@ -62,6 +63,7 @@ class UploadedPhoto(Resource):
             metadata = {"x": float(args["x"]), "y": float(args["y"]), "photo_filename": filename}
             with open(os.path.join(app.config['UPLOAD_FOLDER'], uuid_string) + '.json', 'w') as fp:
                 json.dump(metadata, fp)
+        photos = load_photos_from_disk(app.config['UPLOAD_FOLDER'])
         return '''
     <!doctype html>
     <title>Upload new File</title>
