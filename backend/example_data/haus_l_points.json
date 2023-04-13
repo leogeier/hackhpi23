@@ -1,0 +1,244 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 29,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.128872038494052,
+          52.39397938596008
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 11,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.128887672361998,
+          52.39386081437033
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 42,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.128088111719222,
+          52.39383900806595
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 7,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.126950644230845,
+          52.39335801400037
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 10,
+        "nature_effected": 100
+      },
+      "geometry": {
+        "coordinates": [
+          13.12667027538211,
+          52.39333550196213
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 30,
+        "nature_effected": 10
+      },
+      "geometry": {
+        "coordinates": [
+          13.12541480515955,
+          52.39235201576551
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 100,
+        "nature_effected": 40
+      },
+      "geometry": {
+        "coordinates": [
+          13.126149101982179,
+          52.39276681399983
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 25,
+        "nature_effected": 80
+      },
+      "geometry": {
+        "coordinates": [
+          13.129773832672214,
+          52.393307160195974
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 1,
+        "nature_effected": 10
+      },
+      "geometry": {
+        "coordinates": [
+          13.129659918357362,
+          52.392409778061534
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 90,
+        "nature_effected": 40
+      },
+      "geometry": {
+        "coordinates": [
+          13.129281929947268,
+          52.392498253167304
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 15,
+        "nature_effected": 55
+      },
+      "geometry": {
+        "coordinates": [
+          13.129696163820057,
+          52.39307965659273
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 78,
+        "nature_effected": 45
+      },
+      "geometry": {
+        "coordinates": [
+          13.1298618573706,
+          52.39252669155667
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 99,
+        "nature_effected": 10
+      },
+      "geometry": {
+        "coordinates": [
+          13.124318745607752,
+          52.39273669951277
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 20,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.124185957866757,
+          52.391968676975836
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 10,
+        "nature_effected": 30
+      },
+      "geometry": {
+        "coordinates": [
+          13.123296392142748,
+          52.39255782670017
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 33,
+        "nature_effected": 17
+      },
+      "geometry": {
+        "coordinates": [
+          13.124711126741545,
+          52.393711079145135
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "pollution": 90,
+        "nature_effected": 10
+      },
+      "geometry": {
+        "coordinates": [
+          13.130626147115407,
+          52.39391403056459
+        ],
+        "type": "Point"
+      },
+      "id": 16
+    }
+  ]
+}
