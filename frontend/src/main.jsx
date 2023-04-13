@@ -3,11 +3,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Start from "./start.jsx";
+import Map from "./map.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Start />,
+  },
+  {
+    path: "/map",
+    element: <Map />,
   },
 ]);
 
