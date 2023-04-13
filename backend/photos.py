@@ -19,7 +19,7 @@ def load_photos_from_disk(path):
             filenames.append(args["photo_filename"])
 
     df = pandas.DataFrame({"x": x, "y": y, "filenames": filenames})
-    gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['x'], df['y']))
+    gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['x'], df['y']), crs="EPSG:4326")
     return gdf
 
 

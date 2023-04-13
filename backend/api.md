@@ -6,6 +6,11 @@ Run with
 ```python api.py```
 
 # Endpoints
+## Cleaned enpoint
+
+POST /cleaned?x=X_COORDINATE&y=Y_COORDINATE
+
+
 ## Set datapoint
 - Can easily be generated [here](https://geojson.io/#map=2/0/20).
 - Pollution [0-100] in Prozent

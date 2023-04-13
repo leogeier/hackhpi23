@@ -83,6 +83,19 @@ class UploadedPhoto(Resource):
     </form>
     '''
 
+class Cleaned(Resource):
+    def put(self):
+        global photos
+        args = request.args
+
+        point_data_frame = gpd.points_from_xy(x=[args["x"]], y=[args["y"]], crs="EPSG:4326")
+        mask = point_data_frame.to_crs(WORKING_CRS)[0].buffer(10)
+        photos = photos.to_crs(WORKING_CRS)
+        photos = photos[~photos.within(mask)]
+        photos = photos.to_crs("EPSG:4326")
+
+
+
 class Photos(Resource):
     def get(self):
         return photos.to_json()
@@ -103,6 +116,7 @@ api.add_resource(UploadedPhoto, '/upload/photo')
 api.add_resource(Points, '/points')
 api.add_resource(Streets, '/streets')
 api.add_resource(Photos, '/photos')
+api.add_resource(Cleaned, '/cleaned')
 
 
 if __name__ == '__main__':
