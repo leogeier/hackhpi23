@@ -13,7 +13,7 @@ function TimeButton(props) {
     timeUnit = "hour";
   }
   const timeText = `${timeNum.toString()} ${timeUnit}${timeNum === 1 ? "" : "s"}`;
-  return (<button className="rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2 px-4 m-2" onClick={() => alert(timeText)}>{timeText}</button>);
+  return (<button className="transition-all rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2 px-4 m-2 hover:scale-110" onClick={() => alert(timeText)}>{timeText}</button>);
 }
 
 export default function Clean() {

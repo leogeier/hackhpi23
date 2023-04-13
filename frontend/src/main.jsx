@@ -7,6 +7,7 @@ import {
 import Start from "./start.jsx";
 import Map from "./map.jsx";
 import Clean from "./clean.jsx";
+import UploadGarbage from "./upload_garbage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "/clean",
         element: <Clean />,
       },
+      {
+        path: "/upload",
+        element: <UploadGarbage />,
+      },
     ]
   },
 ]);
@@ -32,7 +37,7 @@ const router = createBrowserRouter([
 function Content() {
   return (
     <div>
-      <Link to="/"><h1 className="text-sm font-black italic text-emerald-200">Project Title</h1></Link>
+      <Link to="/"><h1 className="transition-all text-sm font-black italic text-emerald-200 hover:text-emerald-300">Project Title</h1></Link>
       <Outlet />
     </div>
   );

@@ -7,6 +7,7 @@ export default function Start() {
       <ul>
         <li><Link to="map">map</Link></li>
         <li><Link to="clean">clean</Link></li>
+        <li><Link to="upload">upload garbage</Link></li>
       </ul>
     </div>
   );
