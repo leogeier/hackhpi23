@@ -23,53 +23,20 @@ function LocationMarker() {
 }
 
 function LoadStreets() {
-
-  const example_json = `{
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "stroke": "#ff2d28",
-          "stroke-width": 2,
-          "stroke-opacity": 1
-        },
-        "geometry": {
-          "coordinates": [
-            [8.910232129914675, 50.14536687853564],
-            [8.911144597334612, 50.14742157191719],
-            [8.911524792092678, 50.14826616335989]
-          ],
-          "type": "LineString"
-        },
-        "id": 0
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "stroke": "#10ff00",
-          "stroke-width": 20,
-          "stroke-opacity": 1
-        },
-        "geometry": {
-          "coordinates": [
-            [8.908811602572115, 50.14699078160584],
-            [8.910979915141581, 50.1469691551643]
-          ],
-          "type": "LineString"
-        },
-        "id": 1
-      }
-    ]
-  }`;
-  
-  const example_object = JSON.parse(example_json);
   const map = useMap();
-  L.geoJSON(example_object, {
-    style: function(feature) {
-      return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
-    }
-  }).addTo(map);
+  fetch("http://localhost:5000/streets")
+  .then(function(response) {
+    return response.json();
+  }).then(function(data) {
+    const example_object = JSON.parse(data);
+    L.geoJSON(example_object, {
+      style: function(feature) {
+        return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
+      }
+    }).addTo(map);
+  }).catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });
   
   return null;
 }
