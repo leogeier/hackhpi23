@@ -2,8 +2,8 @@ from flask import Flask, abort, request
 from flask_restful import Resource, Api
 from schema import UploadedPhotoSchema, AddedPointSchema
 import geopandas
-import json
 import pandas as pd
+from streets import calculate_streets
 
 app = Flask(__name__)
 api = Api(app)
@@ -32,11 +32,13 @@ class Points(Resource):
 
 class Streets(Resource):
     def get(self):
-        pass
+        df = calculate_streets(geometry_objects)
+        return df.to_json()
 
 api.add_resource(Datapoint, '/upload/points')
 api.add_resource(UploadedPhoto, '/upload/photo')
 api.add_resource(Points, '/points')
+api.add_resource(Streets, '/streets')
 
 
 if __name__ == '__main__':
