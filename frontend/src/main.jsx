@@ -45,8 +45,10 @@ function Content() {
 
 export default function Main() {
   return (
-    <div className="m-3">
-      <RouterProvider router={router} />
+    <div className="flex justify-center">
+      <div className="max-w-md m-3">
+        <RouterProvider router={router} />
+      </div>
     </div>
   );
 }
