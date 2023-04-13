@@ -57,7 +57,7 @@ Mit Fileupload
 
 Curl:
 ```
-curl -F "file=@haus_l.jpg" -X PUT "localhost:5000/upload/photo?x=52.3920&y=13.1245"
+curl -F "file=@haus_l.jpg" -X PUT "localhost:5000/upload/photo?y=52.3920&x=13.1245"
 ```
 
 ## Query all photos (as geojson points)
