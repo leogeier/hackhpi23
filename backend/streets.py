@@ -21,11 +21,12 @@ example_photos_path = 'example_data/haus_l_points.json'
 WORKING_CRS = 'EPSG:32632'
 
 def calculate_streets(geometry_objects, buffer_distance=10):
+    input_crs = geometry_objects.crs
     street_geoms = osx.geometries.geometries_from_bbox(north=north,south=south,east=east,west=west,tags=tags)
     street_geoms = street_geoms.loc[:, ('geometry', 'highway')].reset_index('element_type')
     street_geoms_buffered = street_geoms.to_crs(WORKING_CRS)
     street_geoms_buffered.geometry = street_geoms_buffered.buffer(buffer_distance)
-    joined_streets = street_geoms_buffered.sjoin(geometry_objects, how="left")
+    joined_streets = street_geoms_buffered.sjoin(geometry_objects.to_crs(WORKING_CRS), how="left")
     photo_attributes = joined_streets.groupby('osmid')[['pollution', 'nature_effected']].mean()
     street_geoms.loc[photo_attributes.index, ['pollution', 'nature_effected']] = photo_attributes
     street_geoms.pollution = street_geoms.pollution.fillna(0)
@@ -35,4 +36,6 @@ def calculate_streets(geometry_objects, buffer_distance=10):
     hex_number = hex_number * 256 + rgb.green
     hex_number = hex_number * 256 + rgb.blue
     street_geoms['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}')
-    return street_geoms
+    street_geoms['stroke-width'] = 2
+    street_geoms['stroke-opacity'] = 1
+    return street_geoms.to_crs(input_crs)
