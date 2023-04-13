@@ -37,7 +37,7 @@ const router = createBrowserRouter([
 function Content() {
   return (
     <div>
-      <Link to="/"><h1 className="transition-all text-sm font-black italic text-emerald-200 hover:text-emerald-300">Project Title</h1></Link>
+      <Link to="/"><h1 className="transition-all text-2xl font-bold italic text-emerald-200 hover:text-emerald-300">Project Title</h1></Link>
       <Outlet />
     </div>
   );
@@ -45,8 +45,8 @@ function Content() {
 
 export default function Main() {
   return (
-    <div className="flex justify-center">
-      <div className="max-w-md m-3">
+    <div className="text-lg flex justify-center">
+      <div className="w-full max-w-md m-6">
         <RouterProvider router={router} />
       </div>
     </div>
