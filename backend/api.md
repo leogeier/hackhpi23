@@ -57,8 +57,14 @@ Mit Fileupload
 
 Curl:
 ```
-curl -d @../frontend/assets/zigarette.png -X PUT "localhost:5000/upload/photo?x=10.4&y=10.2"
+curl -F "file=@../frontend/assets/zigarette.png" -X PUT "localhost:5000/upload/photo?x=52.3939&y=13.1306"
 ```
+
+## Query all photos (as geojson points)
+GET /photos
+
+They have a property set $filename. You can get the picture under
+GET /static/$FILENAME
 
 
 ## Query pollution
