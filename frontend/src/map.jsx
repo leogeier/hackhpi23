@@ -23,7 +23,7 @@ const gps_options = {
 var cigaretteIcon = L.icon({
   iconUrl: icon,
 
-  iconSize:     [50, 40], // size of the icon
+  iconSize:     [51, 40], // size of the icon
 });
 
 function LocationMarker() {
