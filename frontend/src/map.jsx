@@ -36,14 +36,15 @@ function LocationMarker() {
 
   function setLocationOnMap() {
     navigator.geolocation.getCurrentPosition((pos) => {
-      setPosition([pos.coords.latitude, pos.coords.longitude])
-      map.setView([pos.coords.latitude, pos.coords.longitude])
-      console.log([pos.coords.latitude, pos.coords.longitude])})
+      setPosition([pos.coords.latitude, pos.coords.longitude])})
   }
 
   let map = useMap();
   useEffect(() => {
-    setLocationOnMap();
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setPosition([pos.coords.latitude, pos.coords.longitude]);
+      map.setView([pos.coords.latitude, pos.coords.longitude])
+    })
     interval.current = setInterval(() => {setLocationOnMap()}, 5000)
     return () => {clearInterval(interval.current)}
   }, []);
