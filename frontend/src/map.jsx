@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import * as L from "leaflet";
+import icon from "../assets/zigarette.png"
 
 const fallback = [52.39213645214943, 13.123381806173398]
+
+var cigaretteIcon = L.icon({
+  iconUrl: icon,
+
+  iconSize:     [50, 40], // size of the icon
+});
 
 function LocationMarker() {
   const [position, setPosition] = useState(null)
@@ -57,6 +64,7 @@ function LoadImageMarkers() {
   }).then(function(data) {
     const example_object = JSON.parse(data);
     L.geoJSON(example_object, {
+      pointToLayer: (feature, latlng) => {return L.marker(latlng, {icon: cigaretteIcon})},
       style: function(feature) {
         return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
       },
