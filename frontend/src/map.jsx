@@ -23,7 +23,7 @@ const gps_options = {
 var cigaretteIcon = L.icon({
   iconUrl: icon,
 
-  iconSize:     [50, 40], // size of the icon
+  iconSize:     [51, 40], // size of the icon
 });
 
 function LocationMarker() {
@@ -46,7 +46,7 @@ function LocationMarker() {
 
 function LoadStreets() {
   const map = useMap();
-  fetch("http://localhost:5000//streets")
+  fetch("/api/streets")
   .then(function(response) {
     return response.json();
   }).then(function(data) {
@@ -73,7 +73,7 @@ function LoadRoute() {
   if(route_length){
     navigator.geolocation.getCurrentPosition(onCoordSuccess, onCoordsError, gps_options);  
     function onCoordSuccess(pos) {
-      fetch(`http://localhost:5000//route?x=${pos.coords.longitude}&y=${pos.coords.latitude}&length=${route_length}`)
+      fetch(`/api/route?x=${pos.coords.longitude}&y=${pos.coords.latitude}&length=${route_length}`)
       .then(function(response) {
         return response.json();
       }).then(function(data) {
@@ -107,7 +107,7 @@ function InvalidateOnLoad() {
 
 function LoadImageMarkers() {
   const map = useMap();
-  fetch("http://localhost:5000/photos")
+  fetch("/api/photos")
   .then(function(response) {
     return response.json();
   }).then(function(data) {
@@ -135,7 +135,7 @@ function LoadImageMarkers() {
 }
 
 async function fetchPhoto(filename) {
-  return fetch("http://localhost:5000/static/" + filename)
+  return fetch("/api/static/" + filename)
   .then(function(response) {
     return response;
   }).catch(function(err) {
