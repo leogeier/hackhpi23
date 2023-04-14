@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Map from "./map.jsx";
 import Route from "./route.jsx";
+import Help from "./help.jsx";
 
 const options = {
   enableHighAccuracy: true,
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
         path: "/route",
         element: <Route/>,
       },
+      {
+        path: "/help",
+        element: <Help/>,
+      },
     ]
   },
 ]);
@@ -65,7 +70,7 @@ function Content() {
   return (
     <div>
       <div id="navbar" className="grid grid-cols-6">
-        <Link to="/" className="col-span-3"><h1 className="transition-all font-bold text-xl italic text-emerald-200 hover:text-emerald-300">No More Dragons</h1></Link>
+        <Link to="/" className="col-span-3"><h1 className="transition-all font-bold text-xl italic text-emerald-200 hover:text-emerald-300">No More Dragons</h1></Link> 
         <div>
           <label htmlFor="file-upload-garbage" className="transition-all py-2 px-4 cursor-pointer rounded bg-red-600 hover:bg-red-700 hover:scale-110 active:bg-red-800 inline-flex inline-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-4">
@@ -82,6 +87,11 @@ function Content() {
           Cleaned
         </button></Link>
       </div>
+      <div id="navbar" className="grid grid-cols-10">
+      <div className="col-span-9"></div>
+        <Link to="/help" ><button className=" bg-blue-500 text-white font-bold rounded px-2 opacity-50">?</button></Link>
+      </div>
+      
       <Outlet />
     </div>
   );

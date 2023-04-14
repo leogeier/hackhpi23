@@ -49,7 +49,7 @@
         el.addEventListener("gps-camera-update-position", e => {
             if (!testEntityAdded) {
                 console.log(`Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`);
-                fetch(`/game_target?x=${e.detail.position.longitude}&y=${e.detail.position.latitude}`)
+                fetch(`/api/game_target?x=${e.detail.position.longitude}&y=${e.detail.position.latitude}`)
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {

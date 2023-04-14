@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import * as L from "leaflet";
 import icon from "../assets/zigarette.png"
@@ -14,6 +14,7 @@ import {
 
 const fallback = [52.39213645214943, 13.123381806173398]
 
+
 const gps_options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -23,19 +24,30 @@ const gps_options = {
 var cigaretteIcon = L.icon({
   iconUrl: icon,
 
-  iconSize:     [51, 40], // size of the icon
+  iconSize:     [80, 50], // size of the icon
 });
+
+
 
 function LocationMarker() {
   const [position, setPosition] = useState(null)
+  const interval = useRef();
+  
+
+  function setLocationOnMap() {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setPosition([pos.coords.latitude, pos.coords.longitude])})
+  }
 
   let map = useMap();
   useEffect(() => {
-    map.locate().on("locationfound", function (e) {
-      setPosition(e.latlng)
-      map.setView(e.latlng);
-    });
-  }, [map]);
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setPosition([pos.coords.latitude, pos.coords.longitude]);
+      map.setView([pos.coords.latitude, pos.coords.longitude])
+    })
+    interval.current = setInterval(() => {setLocationOnMap()}, 5000)
+    return () => {clearInterval(interval.current)}
+  }, []);
 
   return (
     <Marker position={position ?? fallback}>
@@ -118,7 +130,6 @@ function LoadImageMarkers() {
         return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
       },
       onEachFeature: async function onEachFeature(feature, layer) {
-        // does this feature have a property named popupContent?
         if (feature.properties && feature.properties.filenames) {
             const image = new Image(300, 300)
             const imageData = await fetchPhoto(feature.properties.filenames)
