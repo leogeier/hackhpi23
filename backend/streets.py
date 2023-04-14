@@ -57,9 +57,18 @@ def style_streets(streets, intensity_column='urgendy', cmap=DEFAULT_CMAP, stroke
     streets['stroke-width'] = stroke_width
     streets['stroke-opacity'] = stroke_opacity
 
-def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
+def calculate_streets(geometry_objects, buffer_distance=10, north=NORTH, south=SOUTH, east=EAST, west=WEST,
+                      cmap=DEFAULT_CMAP):
     input_crs = geometry_objects.crs
-    street_geoms, graph = fetch_osm()
+    geometry_objects.index.name = 'index'
+    tree_points =  osx.geometries.geometries_from_bbox(north=north, south=south, east=east, west=west, tags={'natural':'tree'})
+    tree_points = tree_points.loc[:, ['geometry']].to_crs(WORKING_CRS)
+    geometry_objects_buffered = geometry_objects.to_crs(WORKING_CRS)
+    geometry_objects_buffered.geometry = geometry_objects_buffered.buffer(buffer_distance)
+    joined_objects = geometry_objects_buffered.sjoin(tree_points, how="left")
+    geometry_objects['nature_effected'] = joined_objects.groupby('index')['nature_effected'].count()
+    geometry_objects.nature_effected = (0.5 + geometry_objects.nature_effected / 4).clip(lower=0, upper=1)
+    street_geoms, graph = fetch_osm(north=north, south=south, west=west, east=east)
     #street_geoms = street_geoms.loc[:, ('geometry', 'highway')].reset_index('element_type')
     street_geoms_buffered = street_geoms.to_crs(WORKING_CRS)
     street_geoms_buffered.geometry = street_geoms_buffered.buffer(buffer_distance)
@@ -68,7 +77,7 @@ def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
     street_geoms.loc[photo_attributes.index, ['pollution', 'nature_effected']] = photo_attributes
     street_geoms.pollution = street_geoms.pollution.fillna(0)
     street_geoms.nature_effected = street_geoms.nature_effected.fillna(0)
-    street_geoms['urgency'] = street_geoms.pollution #TODO
+    street_geoms['urgency'] = street_geoms.pollution * street_geoms.nature_effected
     style_streets(streets=street_geoms, cmap=cmap)
     return street_geoms.to_crs(input_crs)
 
