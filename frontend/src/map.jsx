@@ -24,7 +24,7 @@ const gps_options = {
 var cigaretteIcon = L.icon({
   iconUrl: icon,
 
-  iconSize:     [51, 40], // size of the icon
+  iconSize:     [80, 50], // size of the icon
 });
 
 
