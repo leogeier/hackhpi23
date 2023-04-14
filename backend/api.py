@@ -31,13 +31,6 @@ api = Api(app)
 geometry_objects = gpd.read_file("example_data/haus_l_points.json")
 photos = load_photos_from_disk(app.config['UPLOAD_FOLDER'])
 
-@app.route('/game')
-def game():
-    target_lon = float(request.args.get('x'))
-    target_lat = float(request.args.get('z'))
-    target_height = 0
-    return render_template('game.html', target_lon=target_lon, target_lat=target_lat, target_height=target_height)
-
 class Datapoint(Resource):
     def put(self):
         global geometry_objects
