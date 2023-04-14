@@ -46,7 +46,11 @@
                     }).then(function (data) {
                         const target_pos = JSON.parse(data);
                         // Add a box to the north of the initial GPS position
-                        const entity = document.createElement("a-box");
+                        // const entity = document.createElement("a-box");
+                        const entity = document.createElement('a-entity');
+                        entity.setAttribute('gltf-model', './assets/magnemite/scene.gltf');
+                        //entity.setAttribute('rotation', '0 180 0');
+                        entity.setAttribute('animation-mixer', '');
                         entity.setAttribute("scale", {
                             x: 10,
                             y: 10,
