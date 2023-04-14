@@ -21,13 +21,27 @@ function uploadReport(e) {
   function onCoordSuccess(pos) {
     let formData = new FormData();
     formData.append("file", photo);
-    fetch(`http://localhost:5000/upload/photo?x=${pos.coords.latitude}&y=${pos.coords.longitude}`, {method: "PUT", body: formData})
+    fetch(`http://localhost:5000/upload/photo?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT", body: formData})
     .then(function (response){location.reload()}); 
   }
 
   function onCoordsError(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`)
   }
+}
+
+function cleanMarker(e) {
+  navigator.geolocation.getCurrentPosition(onCoordSuccess, onCoordsError, options);
+  
+  function onCoordSuccess(pos) {
+    fetch(`http://localhost:5000/cleaned?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT"})
+    .then(function (response){location.reload()}); 
+  }
+
+  function onCoordsError(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`)
+  }
+
 }
 
 const router = createBrowserRouter([
@@ -64,7 +78,7 @@ function Content() {
         <Link to="/route"><button className="bg-transparent text-xs hover:bg-blue-500 text-blue-700 p-2 font-semibold hover:text-white border border-blue-500 hover:border-transparent rounded">
           Route
         </button></Link>
-        <Link to="/cleaned"><button className="bg-transparent text-xs hover:bg-green-500 text-green-700 p-2 font-semibold hover:text-white border border-green-500 hover:border-transparent rounded">
+        <Link to="/"><button className="bg-transparent text-xs hover:bg-green-500 text-green-700 p-2 font-semibold hover:text-white border border-green-500 hover:border-transparent rounded" onClick={cleanMarker}>
           Cleaned
         </button></Link>
       </div>
