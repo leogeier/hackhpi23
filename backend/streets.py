@@ -73,7 +73,7 @@ def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
     return street_geoms.to_crs(input_crs)
 
 
-def calculate_route(position, geometry_objects, num_paths = 100, path_length_meters = 500, cmap = DEFAULT_CMAP):
+def calculate_route(position, geometry_objects, num_paths = 500, path_length_meters = 500, cmap = DEFAULT_CMAP):
     position = np.array(position)
 
     street_geoms, graph = fetch_osm()

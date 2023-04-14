@@ -9,7 +9,7 @@ import os
 import uuid
 import json
 
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 from photos import load_photos_from_disk
 import shapely
@@ -22,13 +22,21 @@ def allowed_file(filename):
 UPLOAD_FOLDER = 'uploads/'
 app = Flask(__name__,
             static_url_path='/static',
-            static_folder='uploads')
+            static_folder='uploads',
+            template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 api = Api(app)
 
 geometry_objects = gpd.read_file("example_data/haus_l_points.json")
 photos = load_photos_from_disk(app.config['UPLOAD_FOLDER'])
+
+@app.route('/game')
+def game():
+    target_lon = float(request.args.get('x'))
+    target_lat = float(request.args.get('z'))
+    target_height = 0
+    return render_template('game.html', target_lon=target_lon, target_lat=target_lat, target_height=target_height)
 
 class Datapoint(Resource):
     def put(self):
@@ -119,7 +127,17 @@ class Route(Resource):
         length = float(args["length"])
         route = calculate_route(position=position, geometry_objects=geometry_objects, path_length_meters=length)
         return route.to_json()
-
+    
+class GameTarget(Resource):
+    def get(self):
+        global geometry_objects
+        args = request.args
+        position = [float(args["x"]), float(args["y"])]
+        res = {
+            'target_lon' : position[0] + 0.001,
+            'target_lat' : position[1] + 0.001,
+        }
+        return json.dumps(res)
 
 api.add_resource(Datapoint, '/upload/points')
 api.add_resource(UploadedPhoto, '/upload/photo')
@@ -128,7 +146,12 @@ api.add_resource(Streets, '/streets')
 api.add_resource(Photos, '/photos')
 api.add_resource(Cleaned, '/cleaned')
 api.add_resource(Route, '/route')
+api.add_resource(GameTarget, '/game_target')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    import ssl
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain('cert.pem', 'key.pem')
+    app.run(debug=True, host="0.0.0.0", ssl_context=context, port=8082)
