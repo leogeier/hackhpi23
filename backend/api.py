@@ -57,7 +57,7 @@ class Datapoint(Resource):
 
 class UploadedPhoto(Resource):
     def put(self):
-        global photos
+        global photos, geometry_objects
         errors = UploadedPhotoSchema().validate(request.args)
         print(request.args)
         if errors:
@@ -80,6 +80,13 @@ class UploadedPhoto(Resource):
             metadata = {"x": float(args["x"]), "y": float(args["y"]), "photo_filename": filename}
             with open(os.path.join(app.config['UPLOAD_FOLDER'], uuid_string) + '.json', 'w') as fp:
                 json.dump(metadata, fp)
+            point_geo_series = gpd.points_from_xy(x=[args["x"]], y=[args["y"]], crs="EPSG:4326")
+
+            point_data_frame = gpd.GeoDataFrame({"pollution": 90, "geometry": point_geo_series})
+
+            geometry_objects = pd.concat([geometry_objects, point_data_frame])
+            
+
         photos = load_photos_from_disk(app.config['UPLOAD_FOLDER'])
         return '''
     <!doctype html>
@@ -93,7 +100,7 @@ class UploadedPhoto(Resource):
 
 class Cleaned(Resource):
     def put(self):
-        global photos
+        global photos, geometry_objects
         args = request.args
 
         point_data_frame = gpd.points_from_xy(x=[args["x"]], y=[args["y"]], crs="EPSG:4326")
@@ -101,6 +108,11 @@ class Cleaned(Resource):
         photos = photos.to_crs(WORKING_CRS)
         photos = photos[~photos.within(mask)]
         photos = photos.to_crs("EPSG:4326")
+
+        geometry_objects = geometry_objects.to_crs(WORKING_CRS)
+        geometry_objects = geometry_objects[~geometry_objects.within(mask)]
+        geometry_objects = geometry_objects.to_crs("EPSG:4326")
+
 
 
 

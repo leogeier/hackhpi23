@@ -21,7 +21,7 @@ function uploadReport(e) {
   function onCoordSuccess(pos) {
     let formData = new FormData();
     formData.append("file", photo);
-    fetch(`/upload/photo?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT", body: formData})
+    fetch(`/api/upload/photo?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT", body: formData})
     .then(function (response){location.reload()}); 
   }
 
@@ -34,7 +34,7 @@ function cleanMarker(e) {
   navigator.geolocation.getCurrentPosition(onCoordSuccess, onCoordsError, options);
   
   function onCoordSuccess(pos) {
-    fetch(`/cleaned?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT"})
+    fetch(`/api/cleaned?x=${pos.coords.longitude}&y=${pos.coords.latitude}`, {method: "PUT"})
     .then(function (response){location.reload()}); 
   }
 
