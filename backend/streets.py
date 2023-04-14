@@ -22,7 +22,7 @@ TAGS = {'highway':['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unc
 example_photos_path = 'example_data/haus_l_points.json'
 WORKING_CRS = 'EPSG:32632'
 
-DEFAULT_CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("", ["red","green"])
+DEFAULT_CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("", ["green","red"])
 
 def fetch_osm(north=NORTH, south=SOUTH, east=EAST, west=WEST):
     graph = osx.graph.graph_from_bbox(north=north, south=south, west=west, east=east)
@@ -53,7 +53,7 @@ def style_sreets(streets, intensity_column='urgendy', cmap=DEFAULT_CMAP, width=2
     hex_number = rgb.red
     hex_number = hex_number * 256 + rgb.green
     hex_number = hex_number * 256 + rgb.blue
-    streets['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}')
+    streets['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}').to_numpy()
     streets['stroke-width'] = 2
     streets['stroke-opacity'] = 1
 
