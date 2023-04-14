@@ -3,7 +3,22 @@ import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import * as L from "leaflet";
 import icon from "../assets/zigarette.png"
 
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate, 
+  Link,
+  Outlet,
+  useSearchParams,
+} from "react-router-dom";
+
 const fallback = [52.39213645214943, 13.123381806173398]
+
+const gps_options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
 
 var cigaretteIcon = L.icon({
   iconUrl: icon,
@@ -31,7 +46,7 @@ function LocationMarker() {
 
 function LoadStreets() {
   const map = useMap();
-  fetch("/api/streets")
+  fetch("http://localhost:5000//streets")
   .then(function(response) {
     return response.json();
   }).then(function(data) {
@@ -45,6 +60,40 @@ function LoadStreets() {
   }).catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
+  
+  return null;
+}
+
+function LoadRoute() {
+  const map = useMap();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  let route_length = searchParams.get("length")
+
+  if(route_length){
+    navigator.geolocation.getCurrentPosition(onCoordSuccess, onCoordsError, gps_options);  
+    function onCoordSuccess(pos) {
+      fetch(`http://localhost:5000//route?x=${pos.coords.longitude}&y=${pos.coords.latitude}&length=${route_length}`)
+      .then(function(response) {
+        return response.json();
+      }).then(function(data) {
+        const example_object = JSON.parse(data);
+        console.log("ROUTE")
+        L.geoJSON(example_object, {
+          style: function(feature) {
+            return {color: feature.properties.stroke, weight: feature.properties["stroke-width"], opacity: feature.properties["stroke-opacity"]} 
+          }
+        }).addTo(map);
+
+      }).catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      }); 
+    }
+
+    function onCoordsError(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`)
+    }
+  }
   
   return null;
 }
@@ -103,6 +152,7 @@ export default function Map() {
         <InvalidateOnLoad/>
         <LocationMarker />
         <LoadStreets/>
+        <LoadRoute/>
         <LoadImageMarkers/>
 
         <TileLayer

@@ -116,7 +116,8 @@ class Route(Resource):
         global geometry_objects
         args = request.args
         position = [float(args["x"]), float(args["y"])]
-        route = calculate_route(position=position, geometry_objects=geometry_objects)
+        length = float(args["length"])
+        route = calculate_route(position=position, geometry_objects=geometry_objects, path_length_meters=length)
         return route.to_json()
 
 

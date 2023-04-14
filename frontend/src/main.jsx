@@ -6,7 +6,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Map from "./map.jsx";
-import Clean from "./clean.jsx";
+import Route from "./route.jsx";
 
 const options = {
   enableHighAccuracy: true,
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/route",
-        element: <Clean />,
+        element: <Route/>,
       },
     ]
   },

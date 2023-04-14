@@ -48,14 +48,14 @@ def fetch_osm(north=NORTH, south=SOUTH, east=EAST, west=WEST):
     street_geoms.index.name = 'osmid'
     return street_geoms, graph
 
-def style_sreets(streets, intensity_column='urgendy', cmap=DEFAULT_CMAP, width=2, opacity=1):
+def style_streets(streets, intensity_column='urgendy', cmap=DEFAULT_CMAP, stroke_width=2, stroke_opacity=1):
     rgb = pd.DataFrame(cmap(streets.urgency)[:,:3] * 255, columns=['red', 'green', 'blue'])
     hex_number = rgb.red
     hex_number = hex_number * 256 + rgb.green
     hex_number = hex_number * 256 + rgb.blue
     streets['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}').to_numpy()
-    streets['stroke-width'] = 2
-    streets['stroke-opacity'] = 1
+    streets['stroke-width'] = stroke_width
+    streets['stroke-opacity'] = stroke_opacity
 
 def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
     input_crs = geometry_objects.crs
@@ -69,7 +69,7 @@ def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
     street_geoms.pollution = street_geoms.pollution.fillna(0)
     street_geoms.nature_effected = street_geoms.nature_effected.fillna(0)
     street_geoms['urgency'] = street_geoms.pollution #TODO
-    style_sreets(streets=street_geoms, cmap=cmap)
+    style_streets(streets=street_geoms, cmap=cmap)
     return street_geoms.to_crs(input_crs)
 
 
@@ -117,5 +117,5 @@ def calculate_route(position, geometry_objects, num_paths = 100, path_length_met
         paths.append((sum(urgencies), path, path_geoms, urgencies))
     best_path = paths[np.argmax([p[0] for p in paths])]
     best_path = gpd.GeoDataFrame({'urgency':best_path[3]}, geometry=best_path[2], crs='EPSG:4326')
-    style_sreets(streets=best_path, cmap=cmap)
+    style_streets(streets=best_path, cmap=cmap, stroke_width=8)
     return best_path
