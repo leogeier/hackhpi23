@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from schema import UploadedPhotoSchema
 import geopandas as gpd
 import pandas as pd
-from streets import calculate_streets, WORKING_CRS
+from streets import calculate_streets, WORKING_CRS, calculate_route
 from flask_cors import CORS
 import os
 import uuid
@@ -110,6 +110,15 @@ class Streets(Resource):
     def get(self):
         df = calculate_streets(geometry_objects)
         return df.to_json()
+    
+class Route(Resource):
+    def get(self):
+        global geometry_objects
+        args = request.args
+        position = [float(args["x"]), float(args["y"])]
+        route = calculate_route(position=position, geometry_objects=geometry_objects)
+        return route.to_json()
+
 
 api.add_resource(Datapoint, '/upload/points')
 api.add_resource(UploadedPhoto, '/upload/photo')
@@ -117,6 +126,7 @@ api.add_resource(Points, '/points')
 api.add_resource(Streets, '/streets')
 api.add_resource(Photos, '/photos')
 api.add_resource(Cleaned, '/cleaned')
+api.add_resource(Route, '/route')
 
 
 if __name__ == '__main__':

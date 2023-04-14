@@ -8,7 +8,7 @@ import numpy as np
 import osmnx as osx
 import folium
 import networkx as nx
-
+import matplotlib
 
 NORTH = 52.39890924715826
 SOUTH = 52.38917919930299
@@ -21,6 +21,8 @@ TAGS = {'highway':['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unc
                    'footway', 'bridleway', 'steps', 'corridor', 'path', 'via_ferrata']}
 example_photos_path = 'example_data/haus_l_points.json'
 WORKING_CRS = 'EPSG:32632'
+
+DEFAULT_CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("", ["red","green"])
 
 def fetch_osm(north=NORTH, south=SOUTH, east=EAST, west=WEST):
     graph = osx.graph.graph_from_bbox(north=north, south=south, west=west, east=east)
@@ -46,7 +48,16 @@ def fetch_osm(north=NORTH, south=SOUTH, east=EAST, west=WEST):
     street_geoms.index.name = 'osmid'
     return street_geoms, graph
 
-def calculate_streets(geometry_objects, buffer_distance=10):
+def style_sreets(streets, intensity_column='urgendy', cmap=DEFAULT_CMAP, width=2, opacity=1):
+    rgb = pd.DataFrame(cmap(streets.urgency)[:,:3] * 255, columns=['red', 'green', 'blue'])
+    hex_number = rgb.red
+    hex_number = hex_number * 256 + rgb.green
+    hex_number = hex_number * 256 + rgb.blue
+    streets['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}')
+    streets['stroke-width'] = 2
+    streets['stroke-opacity'] = 1
+
+def calculate_streets(geometry_objects, buffer_distance=10, cmap=DEFAULT_CMAP):
     input_crs = geometry_objects.crs
     street_geoms, graph = fetch_osm()
     #street_geoms = street_geoms.loc[:, ('geometry', 'highway')].reset_index('element_type')
@@ -58,17 +69,11 @@ def calculate_streets(geometry_objects, buffer_distance=10):
     street_geoms.pollution = street_geoms.pollution.fillna(0)
     street_geoms.nature_effected = street_geoms.nature_effected.fillna(0)
     street_geoms['urgency'] = street_geoms.pollution #TODO
-    rgb = pd.DataFrame({'red':(street_geoms.urgency * 255 / 100), 'green':0, 'blue':0}).astype(int)
-    hex_number = rgb.red 
-    hex_number = hex_number * 256 + rgb.green
-    hex_number = hex_number * 256 + rgb.blue
-    street_geoms['stroke'] = hex_number.astype(int).apply(lambda i: f'#{i:06x}')
-    street_geoms['stroke-width'] = 2
-    street_geoms['stroke-opacity'] = 1
+    style_sreets(streets=street_geoms, cmap=cmap)
     return street_geoms.to_crs(input_crs)
 
 
-def calculate_route(position, geometry_objects, num_paths = 100, path_length_meters = 500):
+def calculate_route(position, geometry_objects, num_paths = 100, path_length_meters = 500, cmap = DEFAULT_CMAP):
     position = np.array(position)
 
     street_geoms, graph = fetch_osm()
@@ -112,4 +117,5 @@ def calculate_route(position, geometry_objects, num_paths = 100, path_length_met
         paths.append((sum(urgencies), path, path_geoms, urgencies))
     best_path = paths[np.argmax([p[0] for p in paths])]
     best_path = gpd.GeoDataFrame({'urgency':best_path[3]}, geometry=best_path[2], crs='EPSG:4326')
+    style_sreets(streets=best_path, cmap=cmap)
     return best_path
