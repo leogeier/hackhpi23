@@ -139,8 +139,8 @@ class GameTarget(Resource):
         args = request.args
         position = [float(args["x"]), float(args["y"])]
         res = {
-            'target_lon' : position[0] + 0.001,
-            'target_lat' : position[1] + 0.001,
+            'target_lon' : position[0] + 0.0001,
+            'target_lat' : position[1] + 0.0001,
         }
         return json.dumps(res)
 
